@@ -23,11 +23,14 @@ docker exec -it laravel_app bash
 *Before running these commands make sure you have created a database named `laravel_job_board` in your MySQL server.*
 
 ````
+BE
 - composer install 
 - supervisorctl start queue_worker
-- npm install && npm run dev
 - php artisan key:generate
 - php artisan  migrate:fresh --seed
+
+FE
+- npm install && npm run dev  <npm run build for production>
 ````
 
 #### PHPStorm IDE

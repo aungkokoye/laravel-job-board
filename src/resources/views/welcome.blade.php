@@ -8,6 +8,12 @@
         @vite('resources/css/app.css')
     </head>
     <body>
-        <h1 class="text-2xl text-blue-400"> Hello World</h1>
+        <div class="container mx-auto px-4 py-10 max-w-screen-xl">
+            <div class="rounded-md bg-gray-50 p-4 shadow-lg">
+                <h1 class="text-2xl text-blue-400"> Hello World</h1>
+            </div>
+
+        </div>
+
     </body>
 </html>
