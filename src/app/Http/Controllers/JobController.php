@@ -12,9 +12,30 @@ class JobController extends Controller
      */
     public function index()
     {
+        $jobs = Job::query();
+        $jobs->when(request('search'), function ($query, $search) {
+            // where and or-where are grouped here to avoid logic issues
+            $query->where(function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->when(request('min-salary'), function ($query, $salary) {
+            $query->where('salary', '>=', $salary);
+            })
+            ->when(request('mix-salary'), function ($query, $salary) {
+                $query->where('salary', '<=', $salary);
+            })
+            ->when(request('experience'), function ($query, $experience) {
+                $query->where('experience', $experience);
+            })
+            ->when(request('category'), function ($query, $category) {
+                $query->where('category', $category);
+            })
+        ;
         return view(
             'jobs.index',
-            ['jobs' => Job::paginate(10)]
+            ['jobs' => $jobs->paginate(10)->appends(request()->query())]
         );
     }
 
@@ -37,9 +58,9 @@ class JobController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Job $job)
     {
-        //
+        return view('jobs.show', ['job' => $job]);
     }
 
     /**

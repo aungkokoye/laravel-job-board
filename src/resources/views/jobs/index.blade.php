@@ -1,42 +1,55 @@
 <x-layout>
-    @forelse($jobs as $job)
-        <x-card class="mb-4">
-            <x-flex-box class="mb-2">
+    <div class="mb-4">
+        <x-breadcrumbs :links="[
+            'Jobs' => route('jobs.index')
+        ]" />
+    </div>
+
+    <x-card class="mb-4">
+        <form action="{{ route('jobs.index') }}" method="GET">
+            <div class="grid grid-cols-2 gap-4 p-4">
                 <div>
-                    <h1 class="text-slate-700 text-lg"> {{ $job->title }}</h1>
+                    <div class="text-slate-500 text-lg mb-4"> Search </div>
+                    <x-text-input name="search" placeholder="Search by job title or description ..." value="{{ request('search') }}"/>
                 </div>
-                <div class="text-sm text-slate-500">
-                    £ {{ number_format($job->salary) }}
-                </div>
-            </x-flex-box>
-            <x-flex-box  class="mb-4">
-                <div class="text-md text-slate-500">
-                    Company Name  {{ $job->location }}
-                </div>
-
-                <div class="flex gap-2">
-                    <div class="rounded-md bg-slate-400 text-white px-2 py-1 text-xs">
-                        {{ $job->experience }}
-                    </div>
-                    <div class="rounded-md bg-slate-400 text-white px-2 py-1 text-xs">
-                        {{ $job->category }}
+                <div>
+                    <div class="text-slate-500 text-lg mb-4"> Salary </div>
+                    <div class="flex items-center gap-2">
+                        <x-text-input name="min-salary" placeholder="Minimum Salar" value="{{ request('min-salary') }}"/>
+                        <x-text-input name="mix-salary" placeholder="Maximum Salary" value="{{ request('mix-salary') }}"/>
                     </div>
                 </div>
-            </x-flex-box >
+                <div>
+                    <div class="text-slate-500 text-lg mb-4"> Experience </div>
+                    <x-radio-group name="experience" :options="\App\Models\Job::$experiences" />
+                </div>
+                <div>
+                    <div class="text-slate-500 text-lg mb-4"> Category </div>
+                    <x-radio-group name="category" :options="\App\Models\Job::$categories" />
+                </div>
+            </div>
+            <div class="flex justify-self-auto gap-6">
+                <button type="submit"  class="btn bg-slate-50 text-slate-500 font-medium px-4 py-2 rounded-md
+                ring-1 ring-slate-500 hover:bg-slate-200">
+                    Filter
+                </button>
+                <a href="{{ route('jobs.index') }}" class="btn bg-slate-200 text-slate-500 font-medium px-4 py-2
+                    rounded-md ring-1 ring-slate-500 hover:bg-slate-200"> Reset </a>
+            </div>
+        </form>
+    </x-card>
 
-            <article class="text-sm text-slate-500">
-                <p>
-                    {!! nl2br(e($job->description)) !!}
-                </p>
-            </article>
-        </x-card>
+    @forelse($jobs as $job)
+        <x-jobs.card class="mb-4" :$job>
+            <div class="mt-6">
+                <x-link-button :herf="route('jobs.show', $job)" :text="'View Job'"/>
+            </div>
+        </x-jobs.card>
     @empty
         <span class="text-gray-700">No jobs found.</span>
     @endforelse
 
     <div class="mt-6">
-        <div>
-            {{ $jobs->links() }}
-        </div>
+        {{ $jobs->links('vendor.pagination.tailwind') }}
     </div>
 </x-layout>
