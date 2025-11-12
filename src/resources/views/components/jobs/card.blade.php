@@ -13,12 +13,12 @@
         </div>
 
         <x-flex-box  class="space-x-2">
-            <div class="rounded-md ring-1 ring-slate-500 text-slate-500 px-2 py-1 text-xs">
-                {{ $job->experience }}
-            </div>
-            <div class="rounded-md ring-1 ring-slate-500 text-slate-500  px-2 py-1 text-xs">
-                {{ $job->category }}
-            </div>
+            <a href="{{ route('jobs.index', ['experience' => $job->experience]) }}">
+                <x-tag lable="{{ $job->experience }}" />
+            </a>
+            <a href="{{ route('jobs.index', ['category' => $job->category]) }}">
+                <x-tag lable="{{ $job->category}}" />
+            </a>
         </x-flex-box >
     </x-flex-box >
 

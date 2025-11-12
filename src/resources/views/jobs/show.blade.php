@@ -1,7 +1,7 @@
 <x-layout>
     <div class="mb-4">
         <x-breadcrumbs :links="[
-            'Jobs' => route('jobs.index'),
+            'Jobs' => url()->previous() ?? route('jobs.index'),
             $job->title => route('jobs.show', $job),
         ]" />
     </div>
