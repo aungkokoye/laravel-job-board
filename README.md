@@ -30,7 +30,7 @@ BE
 - php artisan  migrate:fresh --seed
 
 FE
-- npm install && npm run dev  <npm run build for production>
+- npm install && npm run build -- --watch <npm run build for css changes>
 ````
 
 #### PHPStorm IDE
