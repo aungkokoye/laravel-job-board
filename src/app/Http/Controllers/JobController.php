@@ -12,30 +12,16 @@ class JobController extends Controller
      */
     public function index()
     {
-        $jobs = Job::query();
-        $jobs->when(request('search'), function ($query, $search) {
-            // where and or-where are grouped here to avoid logic issues
-            $query->where(function ($query) use ($search) {
-                $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-                });
-            })
-            ->when(request('min-salary'), function ($query, $salary) {
-            $query->where('salary', '>=', $salary);
-            })
-            ->when(request('mix-salary'), function ($query, $salary) {
-                $query->where('salary', '<=', $salary);
-            })
-            ->when(request('experience'), function ($query, $experience) {
-                $query->where('experience', $experience);
-            })
-            ->when(request('category'), function ($query, $category) {
-                $query->where('category', $category);
-            })
-        ;
+        $filters = request()->only(
+            'search',
+            'min-salary',
+            'max-salary',
+            'experience',
+            'category'
+        );
         return view(
             'jobs.index',
-            ['jobs' => $jobs->paginate(10)->appends(request()->query())]
+            ['jobs' => Job::filter($filters)->paginate(10)->appends(request()->query())]
         );
     }
 
