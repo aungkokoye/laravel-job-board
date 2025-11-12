@@ -1,22 +1,23 @@
 <x-layout>
     <div class="mb-4">
-        <x-breadcrumbs :links="[
-            'Jobs' => route('jobs.index')
-        ]" />
+        <x-breadcrumbs :links="['Jobs' => route('jobs.index')]" />
     </div>
 
     <x-card class="mb-4">
-        <form action="{{ route('jobs.index') }}" method="GET">
+        <form action="{{ route('jobs.index') }}" method="GET" x-ref="job-filter">
             <div class="grid grid-cols-2 gap-4 p-4">
                 <div>
                     <div class="text-slate-500 text-lg mb-4"> Search </div>
-                    <x-text-input name="search" placeholder="Search by job title or description ..." value="{{ request('search') }}"/>
+                    <x-text-input name="search" placeholder="Search by job title or description ..." value="{{ request('search') }}"
+                                  formRef="job-filter" />
                 </div>
                 <div>
                     <div class="text-slate-500 text-lg mb-4"> Salary </div>
                     <div class="flex items-center gap-2">
-                        <x-text-input name="min-salary" placeholder="Minimum Salar" value="{{ request('min-salary') }}"/>
-                        <x-text-input name="mix-salary" placeholder="Maximum Salary" value="{{ request('mix-salary') }}"/>
+                        <x-text-input name="min-salary" placeholder="Minimum Salar" value="{{ request('min-salary') }}"
+                                      formRef="job-filter" />
+                        <x-text-input name="mix-salary" placeholder="Maximum Salary" value="{{ request('mix-salary') }}"
+                                      formRef="job-filter" />
                     </div>
                 </div>
                 <div>
@@ -30,11 +31,11 @@
             </div>
             <div class="flex justify-self-auto gap-6">
                 <button type="submit"  class="btn bg-slate-50 text-slate-500 font-medium px-4 py-2 rounded-md
-                ring-1 ring-slate-500 hover:bg-slate-200">
+                        ring-1 ring-slate-500 hover:bg-slate-200">
                     Filter
                 </button>
                 <a href="{{ route('jobs.index') }}" class="btn bg-slate-200 text-slate-500 font-medium px-4 py-2
-                    rounded-md ring-1 ring-slate-500 hover:bg-slate-200"> Reset </a>
+                        rounded-md ring-1 ring-slate-500 hover:bg-slate-200"> Reset </a>
             </div>
         </form>
     </x-card>
