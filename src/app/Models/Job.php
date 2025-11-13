@@ -6,6 +6,7 @@ use Database\Factories\JobFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Query\Builder as QueryBuilder;
 
 /**
@@ -23,6 +24,11 @@ class Job extends Model
     /** @use HasFactory<JobFactory> */
     use HasFactory;
 
+    public function employer(): BelongsTo
+    {
+        return $this->belongsTo(Employer::class);
+    }
+
     public function scopeFilter(EloquentBuilder| QueryBuilder $query, array $filters): EloquentBuilder | QueryBuilder
     {
         return
@@ -30,7 +36,10 @@ class Job extends Model
             // where and or-where are grouped here to avoid logic issues
             $query->where(function ($query) use ($search) {
                 $query->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('employer', function ($query) use ($search) {
+                        $query->where('company_name', 'like', "%{$search}%");
+                    });
             });
         })->when($filters['min-salary'] ?? null, function ($query, $salary) {
                 $query->where('salary', '>=', $salary);

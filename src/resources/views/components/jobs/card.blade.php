@@ -9,7 +9,7 @@
     </x-flex-box>
     <x-flex-box  class="mb-4">
         <div class="text-md text-slate-500">
-            Company Name  {{ $job->location }}
+            {{ $job->employer->company_name }} | {{ $job->location }}
         </div>
 
         <x-flex-box  class="space-x-2">

@@ -20,7 +20,10 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
 
+        User::factory(200)->create();
+
         $this->call([
+            EmployerSeeder::class,
             JobSeeder::class,
         ]);
     }
