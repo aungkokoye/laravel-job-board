@@ -1,4 +1,29 @@
 <x-layout>
+
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            <h1 class="text-2xl text-slate-400"> <a href="/">Home</a> </h1>
+        </div>
+        <div class="text-slate-400 font-medium flex items-center gap-2">
+            @auth
+                <div>
+                    {{ auth()->user()->name ?? 'Anonymous User' }} |
+                </div>
+                <div>
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="text-slate-400-400 text-medium cursor-pointer"> Logout </button>
+                    </form>
+                </div>
+
+            @else
+                <a href="{{ route('login') }}" class="text-slate-400"> Login </a>
+            @endauth
+        </div>
+
+    </div>
+
     <div class="mb-4">
         <x-breadcrumbs :links="['Jobs' => route('jobs.index')]" />
     </div>
