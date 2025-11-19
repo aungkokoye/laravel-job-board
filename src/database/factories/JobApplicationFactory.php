@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\Employer;
+use App\Models\JobApplication;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<Employer>
+ * @extends Factory<JobApplication>
  */
-class EmployerFactory extends Factory
+class JobApplicationFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class EmployerFactory extends Factory
     public function definition(): array
     {
         return [
-            'company_name' => $this->faker->company,
+            "salary_expectation" => $this->faker->numberBetween(4_000, 170_000),
         ];
     }
 }
