@@ -6,12 +6,29 @@
         ]" />
     </div>
 
+    @if (session()->has('success'))
+        <div class="relative bg-green-100 border border-green-500 text-green-700 px-4 py-3 rounded mb-6"
+             role="alert">
+            {{ session('success')}}
+        </div>
+    @endif
+
     <x-jobs.card class="mb-4" :$job >
-        <article class="text-sm text-slate-500">
+        <article class="text-sm text-slate-500 mb-4">
             <p>
                 {!! nl2br(e($job->description)) !!}
             </p>
         </article>
+
+        @can('apply', $job)
+            <a href="{{ route('job.application.create', ['job' => $job])  }}"
+               class="px-4 py-2 border border-transparent font-medium rounded-md shadow-sm
+            text-medium text-white bg-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-2
+            focus:ring-blue-500"> Apply </a>
+        @else
+            <span class="text-medium text-slate-800">You have already applied for this job.</span>
+        @endcan
+
     </x-jobs.card>
 
     <x-card class="mb4">
@@ -33,4 +50,5 @@
             <div class="text-medium text-slate-500"> No Jobs Found. </div>
         @endforelse
     </x-card>
+
 </x-layout>

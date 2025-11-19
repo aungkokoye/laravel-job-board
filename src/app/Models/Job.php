@@ -20,7 +20,9 @@ class Job extends Model
 
     protected $table = 'job_listings';
 
-    protected $fillable = ['title', 'description', 'salary', 'category', 'experience'];
+    protected $fillable = ['title', 'description', 'salary', 'category', 'experience',
+        'user_id'
+    ];
 
     /** @use HasFactory<JobFactory> */
     use HasFactory;
@@ -32,7 +34,15 @@ class Job extends Model
 
     public function applications(): HasMany
     {
-        return $this->hasMany(JobApplication::class, 'job_applications');
+        return $this->hasMany(JobApplication::class, 'job_id');
+    }
+
+    public function canApplyApplication(): bool
+    {
+        return !$this->where('id', $this->id)
+            ->whereHas('applications', function ($query) {
+                $query->where('user_id', auth()->id());
+            })->exists();
     }
 
     public function scopeFilter(EloquentBuilder| QueryBuilder $query, array $filters): EloquentBuilder | QueryBuilder
