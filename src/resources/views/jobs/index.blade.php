@@ -2,23 +2,30 @@
 
     <div class="flex justify-between items-center mb-4">
         <div>
-            <h1 class="text-2xl text-slate-400"> <a href="/">Home</a> </h1>
+            <h1 class="text-2xl text-slate-400 hover:text-blue-400"> <a href="/">Home</a> </h1>
         </div>
         <div class="text-slate-400 font-medium flex items-center gap-2">
             @auth
                 <div>
-                    {{ auth()->user()->name ?? 'Anonymous User' }} |
+                    <a href="{{ route('my-applications.index') }}" class=" hover:text-blue-400">
+                        {{ auth()->user()->name ?? 'Anonymous User' }} : Applications
+                    </a>
+                    |
                 </div>
                 <div>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="text-slate-400-400 text-medium cursor-pointer"> Logout </button>
+                        <button type="submit" class="text-slate-400-400 text-medium cursor-pointer hover:text-blue-400">
+                            Logout
+                        </button>
                     </form>
                 </div>
 
             @else
-                <a href="{{ route('login') }}" class="text-slate-400"> Login </a>
+                <a href="{{ route('login') }}" class="text-slate-400-400 text-medium cursor-pointer hover:text-blue-400">
+                    Login
+                </a>
             @endauth
         </div>
 
@@ -56,11 +63,11 @@
             </div>
             <div class="flex justify-self-auto gap-6">
                 <button type="submit"  class="btn bg-slate-50 text-slate-500 font-medium px-4 py-2 rounded-md
-                        ring-1 ring-slate-500 hover:bg-slate-200">
+                        ring-1 ring-slate-500 hover:bg-slate-200 cursor-pointer">
                     Filter
                 </button>
-                <a href="{{ route('jobs.index') }}" class="btn bg-slate-200 text-slate-500 font-medium px-4 py-2
-                        rounded-md ring-1 ring-slate-500 hover:bg-slate-200"> Reset </a>
+                <a href="{{ route('jobs.index') }}" class="btn bg-slate-50 text-slate-500 font-medium px-4 py-2 rounded-md
+                        ring-1 ring-slate-500 hover:bg-slate-200"> Reset </a>
             </div>
         </form>
     </x-card>
