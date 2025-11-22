@@ -16,6 +16,7 @@ class JobApplication extends Model
         'user_id',
         'job_id',
         'salary_expectation',
+        'file_path'
     ];
 
     public function job(): BelongsTo
