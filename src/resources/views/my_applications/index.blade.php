@@ -34,6 +34,6 @@
             </div>
         </x-jobs.card>
     @empty
-        <span class="text-gray-700">You have not applied for any jobs yet.</form>
+        <span class="text-gray-700">You have not applied for any jobs yet.</span>
     @endforelse
 </x-layout>
