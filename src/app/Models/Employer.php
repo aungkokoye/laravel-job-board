@@ -13,6 +13,8 @@ class Employer extends Model
     /** @use HasFactory<EmployerFactory> */
     use HasFactory;
 
+    protected $fillable = ['company_name'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

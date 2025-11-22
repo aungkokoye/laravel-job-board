@@ -1,6 +1,6 @@
 <x-layout>
 
-    <div class="flex justify-between items-center mb-4">
+    <div class="flex justify-between items-center mb-4 p-4">
         <div>
             <h1 class="text-2xl text-slate-400 hover:text-blue-400"> <a href="/">Home</a> </h1>
         </div>
@@ -12,6 +12,14 @@
                     </a>
                     |
                 </div>
+                @can('register', App\Models\Employer::class)
+                <div>
+                    <a href="{{ route('employer.create') }}" class=" hover:text-blue-400">
+                        Employer Register
+                    </a>
+                    |
+                </div>
+                @endcan
                 <div>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
