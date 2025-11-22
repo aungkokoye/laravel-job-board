@@ -35,6 +35,21 @@
         <x-breadcrumbs :links="['Jobs' => route('jobs.index')]" />
     </div>
 
+    @if (session('success'))
+    <div class="border-1 border-l-4 border-green-300 p-4 mb-4 text-green-600 font-medium text-lg
+    bg-green-100 rounded-md">
+        {{ session('success')}}
+    </div>
+    @endif
+
+    @if (session('error'))
+        <div class=" border-1 border-l-4 border-red-300 p-4 mb-4 text-reed-600 font-medium text-lg
+        bg-red-100 rounded-md">
+            {{ session('success')}}
+        </div>
+    @endif
+
+
     <x-card class="mb-4">
         <form action="{{ route('jobs.index') }}" method="GET" x-ref="job-filter">
             <div class="grid grid-cols-2 gap-4 p-4">
