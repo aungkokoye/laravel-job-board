@@ -29,7 +29,7 @@ class AuthController extends Controller
 
         if (auth()->attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->intended('/');
+            return redirect()->intended('/jobs');
         } else {
             return back()->withErrors(['error'  => 'Invalid credentials'])->withInput();
         }
