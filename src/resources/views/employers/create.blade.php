@@ -10,7 +10,7 @@
         <form action="{{ route('employer.store') }}" method="POST" class="space-y-4">
             @csrf
             <div class="mb-6">
-                <x-label for="company_name" value="Company Name:"/>
+                <x-label for="company_name" value="Company Name:" :required="true"/>
                 <x-text-input id="company_name" name="company_name" type="text"/>
             </div>
 

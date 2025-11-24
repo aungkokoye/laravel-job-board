@@ -6,12 +6,22 @@
         </div>
         <div class="text-slate-400 font-medium flex items-center gap-2">
             @auth
-                <div>
-                    <a href="{{ route('my-applications.index') }}" class=" hover:text-blue-400">
-                        {{ auth()->user()->name ?? 'Anonymous User' }} : Applications
-                    </a>
-                    |
-                </div>
+                @if (auth()->user()->isEmployer())
+                    <div>
+                        <a href="{{ route('my-jobs.index') }}" class=" hover:text-blue-400">
+                            {{ auth()->user()->name ?? 'Anonymous User' }} : Jobs Dashboard
+                        </a>
+                        |
+                    </div>
+                @else
+                    <div>
+                        <a href="{{ route('my-applications.index') }}" class=" hover:text-blue-400">
+                            {{ auth()->user()->name ?? 'Anonymous User' }} : Applications
+                        </a>
+                        |
+                    </div>
+                @endif
+
                 @can('register', App\Models\Employer::class)
                 <div>
                     <a href="{{ route('employer.create') }}" class=" hover:text-blue-400">
@@ -20,6 +30,7 @@
                     |
                 </div>
                 @endcan
+
                 <div>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
@@ -39,8 +50,10 @@
 
     </div>
 
-    <div class="mb-4">
-        <x-breadcrumbs :links="['Jobs' => route('jobs.index')]" />
+    <div class="mb-4 flex justify-between items-center">
+        <div>
+            <x-breadcrumbs :links="['Jobs' => route('jobs.index')]" />
+        </div>
     </div>
 
     @if (session('success'))
