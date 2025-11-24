@@ -16,6 +16,7 @@ class MyJobController extends Controller
     public function index()
     {
         $jobs = Auth()->user()->employer->jobs()
+            ->withTrashed()
             ->with(['applications', 'employer', 'applications.user'])
             ->latest()
             ->paginate(10);
@@ -66,8 +67,22 @@ class MyJobController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Job $myJob)
     {
-        //
+        $this->authorize('canDeleteOrRestoreEmployerJob', $myJob);
+        $myJob->delete();
+
+        return redirect()->route('my-jobs.index')
+            ->with('success', 'Job deleted successfully');
+    }
+
+    public function restore(int $job_id)
+    {
+        $job = Job::withTrashed()->findOrFail($job_id);
+        $this->authorize('canDeleteOrRestoreEmployerJob', $job);
+        $job->restore();
+
+        return redirect()->route('my-jobs.index')
+            ->with('success', 'Job restored successfully');
     }
 }

@@ -24,7 +24,7 @@ class JobController extends Controller
         );
         return view(
             'jobs.index',
-            ['jobs' => Job::filter($filters)->with('employer')->paginate(10)->appends(request()->query())]
+            ['jobs' => Job::filter($filters)->with('employer')->latest()->paginate(10)->appends(request()->query())]
         );
     }
 

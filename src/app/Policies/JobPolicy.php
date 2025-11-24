@@ -21,6 +21,15 @@ class JobPolicy
         return true;
     }
 
+    public function canDeleteOrRestoreEmployerJob(?User $user, Job $job): bool
+    {
+        if ($user->id !== $job->employer?->user_id) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function apply(?User $user, Job $job): bool
     {
         return $job->canApplyApplication();

@@ -26,24 +26,55 @@
     <div>
         @forelse($jobs as $job)
             <x-jobs.card class="mb-4" :$job>
-                @if($job->canEdit())
                 <div class="flex justify-end items-center mb-2">
+                    @if($job->deleted_at !== null && $job->canDeleteOrRestore())
+                        <div>
+                            <form action="{{ route('my-jobs.restore', $job->id) }}" method="POST"
+                                  onsubmit="return confirm('Are you sure you want to restore this job?');">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit"
+                                        class="btn btn-xs border-1 border-slate-50 bg-slate-200 text-slate-400 rounded-md
+                                    hover:bg-slate-300 p-1">
+                                    Restore Job
+                                </button>
+                            </form>
+                        </div>
+
+                    @elseif($job->canDeleteOrRestore())
+
+                    <div>
+                        <form action="{{ route('my-jobs.destroy', $job) }}" method="POST"
+                              onsubmit="return confirm('Are you sure you want to delete this job?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"
+                                    class="btn btn-xs border-1 border-slate-50 bg-red-200 text-red-400 rounded-md
+                                    hover:bg-red-300 p-1">
+                                Delete Job
+                            </button>
+                        </form>
+                    </div>
+                    @endif
+
+                    @if($job->canEdit())
                     <div>
                         <a href=" {{ route('my-jobs.edit', $job ) }}"
                            class="btn btn-sm border-1 border-slate-50 bg-slate-200 text-slate-400 rounded-md
-                            hover:bg-slate-300 p-1">
+                            hover:bg-slate-300 p-2">
                             Edit Job
                         </a>
                     </div>
+                    @endif
+
                 </div>
-                @endif
 
                 @forelse($job->applications as $application)
                     <div class="flex items-center justify-between mb-2 text-slate-400 text-s">
                         <div>
                             <div> {{ $application->user->name }}</div>
                             <div> Applied : {{ $application->created_at->diffForHumans() }}</div>
-                            <div> CV Upload Link</div>
+                            <div class="hover:text-blue-400"> <a href="{{ route('cv.download', $application->file_path) }}">Download CV</a></div>
                         </div>
                         <div>
                            Expected Salary : £ {{ number_format($application->salary_expectation) }}

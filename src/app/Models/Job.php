@@ -5,6 +5,7 @@ namespace App\Models;
 use Database\Factories\JobFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,7 +24,7 @@ class Job extends Model
     protected $fillable = ['title', 'description', 'salary', 'category', 'experience', 'employer_id', 'location'];
 
     /** @use HasFactory<JobFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     public function employer(): BelongsTo
     {
@@ -46,6 +47,11 @@ class Job extends Model
     public function canEdit(): bool
     {
         return $this->applications()->count() === 0;
+    }
+
+    public function canDeleteOrRestore(): bool
+    {
+        return $this->employer?->user_id === auth()->user()->id;
     }
 
     public function scopeFilter(EloquentBuilder| QueryBuilder $query, array $filters): EloquentBuilder | QueryBuilder

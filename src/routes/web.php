@@ -24,5 +24,9 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['employer'])->group(function () {
         Route::resource('my-jobs', MyJobController::class)
             ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+        Route::get('/download-cv/{file}', function ($file) {
+            return response()->download(storage_path("app/cvs/$file"));
+        })->name('cv.download');
+        Route::put('/my-jobs/{job}/restore', [MyJobController::class, 'restore'])->name('my-jobs.restore');
     });
 });
